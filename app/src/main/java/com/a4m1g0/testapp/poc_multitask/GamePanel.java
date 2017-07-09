@@ -19,19 +19,26 @@ public class GamePanel extends View {
 
     public GamePanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+
         initialize();
     }
 
     public GamePanel(Context context) {
         super(context);
-        initialize();
+
     }
 
     private void initialize() {
         paint = new Paint();
         paint.setColor(Color.RED);
 
-        ballGroup = new BallGroup(2000);
+        ballGroup = new BallGroup(4000, getWidth(), getHeight());
     }
 
     @Override
