@@ -18,13 +18,13 @@ public class MainActivity extends AppCompatActivity implements GamePanel.FailLis
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        //sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        //sensorManager.unregisterListener(this);
     }
 
     @Override
@@ -33,10 +33,9 @@ public class MainActivity extends AppCompatActivity implements GamePanel.FailLis
         setContentView(R.layout.activity_main);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, accelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);;
 
-        gamePanel = (GamePanel) findViewById(R.id.ball);
+        gamePanel = (GamePanel) findViewById(R.id.gamePanel);
         gamePanel.bind(this);
     }
 

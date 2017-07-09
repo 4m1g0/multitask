@@ -15,6 +15,8 @@ public class GamePanel extends View {
     Paint paint;
     private FailListener listener;
 
+    BallGroup ballGroup;
+
     public GamePanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initialize();
@@ -28,16 +30,16 @@ public class GamePanel extends View {
     private void initialize() {
         paint = new Paint();
         paint.setColor(Color.RED);
+
+        ballGroup = new BallGroup(2000);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int originX = canvas.getWidth()/2;
-        int originY = canvas.getHeight()-RADIUS;
-
-        canvas.drawCircle(originX + deltaX, originY, RADIUS, paint);
+        ballGroup.draw(canvas);
+        invalidate();
     }
 
     // TODO: El parametro delta de esta función define la velocidad, al sumarlo iterativamente
