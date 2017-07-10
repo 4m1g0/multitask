@@ -1,29 +1,25 @@
 package com.a4m1g0.testapp.poc_multitask;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.View;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
-public class GamePanel extends View {
-    private static final int RADIUS = 50;
-    private int deltaX = 0;
+class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+    private MainThread thread;
     Paint paint;
-    private FailListener listener;
-
     BallGroup ballGroup;
-
-    public GamePanel(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initialize();
-    }
+    //private FailListener listener;
 
     public GamePanel(Context context) {
         super(context);
+
+        getHolder().addCallback(this);
+        thread = new MainThread(getHolder(), this);
+        setFocusable(true);
         initialize();
     }
 
@@ -31,31 +27,49 @@ public class GamePanel extends View {
         paint = new Paint();
         paint.setColor(Color.RED);
 
-        ballGroup = new BallGroup(2000);
+
+
+    }
+
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        ballGroup = new BallGroup(4000, getWidth(), getHeight());
+        thread.start();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        while (true) {
+            try {
+                thread.setNotRunning();
+                thread.join();
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
+    public void update() {
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
 
         ballGroup.draw(canvas);
         invalidate();
-    }
-
-    // TODO: El parametro delta de esta función define la velocidad, al sumarlo iterativamente
-    // a deltaX obtenemos la posición, el problema es que delta deberia ser la aceleración por que
-    // viene del acelerómetro, por lo tanto tendría que asignar una variable aceleración que en cada
-    // tick incrementase una variable velocidad, que en cada tick incrementase una variable posicion
-
-    public void setDeltaX(int delta) {
-        deltaX += delta;
-    }
-
-    public void bind(FailListener listener) {
-        this.listener = listener;
-    }
-
-    public interface FailListener {
-        void fail();
     }
 }

@@ -8,8 +8,9 @@ import android.hardware.SensorManager;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements GamePanel.FailListener, SensorEventListener
+public class MainActivity extends AppCompatActivity implements SensorEventListener
 {
     GamePanel gamePanel;
     SensorManager sensorManager;
@@ -30,20 +31,16 @@ public class MainActivity extends AppCompatActivity implements GamePanel.FailLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(new GamePanel(this));
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);;
 
-        gamePanel = (GamePanel) findViewById(R.id.gamePanel);
-        gamePanel.bind(this);
+        //gamePanel = (GamePanel) findViewById(R.id.gamePanel);
+       // gamePanel.bind(this);
     }
 
-    @Override
-    public void fail() {
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        v.vibrate(500);
-    }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements GamePanel.FailLis
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-            gamePanel.setDeltaX((int)x);
+            //gamePanel.setDeltaX((int)x);
             gamePanel.invalidate();
         }
     }
