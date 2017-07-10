@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,7 +13,6 @@ class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     Paint paint;
     BallGroup ballGroup;
-    //private FailListener listener;
 
     public GamePanel(Context context) {
         super(context);
@@ -23,14 +23,14 @@ class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         initialize();
     }
 
+    public GamePanel(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
     private void initialize() {
         paint = new Paint();
         paint.setColor(Color.RED);
-
-
-
     }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -59,10 +59,6 @@ class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
-    }
-
-    public void update() {
-
     }
 
     @Override

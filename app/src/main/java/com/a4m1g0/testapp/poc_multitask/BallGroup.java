@@ -3,6 +3,7 @@ package com.a4m1g0.testapp.poc_multitask;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,12 @@ import java.util.List;
  */
 
 public class BallGroup implements GameObject {
+    private static final String TAG = "BallGroup";
     List<Ball> balls;
+    private long lastTime;
+    private int frames;
+    private int FRAME_WINDOW = 30;
+
     public BallGroup(int number, int width, int height) {
         balls = new ArrayList<Ball>(number);
         populateBalls(number, width, height);
@@ -32,19 +38,40 @@ public class BallGroup implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
+        frames++;
+        if (frames >= FRAME_WINDOW){
+            frames = 0;
+            printFPS();
+        }
+
+        Paint p = new Paint();
+        p.setColor(Color.BLUE);
+        canvas.drawCircle(0,0, 50, p);
+
+        Paint p2 = new Paint();
+        p2.setColor(Color.MAGENTA);
+        canvas.drawCircle(canvas.getWidth(), canvas.getHeight(), 50, p2);
+
         for (Ball ball : balls) {
             //int randx = (int)(Math.random() * 2);
             //int randx = (int)(Math.random() * 2);
 
 
-            int x = ball.getY() + 1;
+            int y = ball.getY() + 1;
+            y %= canvas.getHeight();
 
-            x %= canvas.getHeight();
-
-
-            ball.setY(x);
-
+            ball.setY(y);
             ball.draw(canvas);
         }
+    }
+
+    private void printFPS(){
+        long execTime = System.nanoTime();
+        long elapsed = execTime - lastTime;
+        lastTime = execTime;
+
+        double fps = (double)1/(((double)elapsed/(double)FRAME_WINDOW)/(double)1000000000);
+
+        Log.d(TAG, String.valueOf(fps));
     }
 }
