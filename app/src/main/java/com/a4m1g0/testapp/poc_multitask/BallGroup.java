@@ -18,13 +18,18 @@ public class BallGroup implements GameObject {
     private long lastTime;
     private int frames;
     private int FRAME_WINDOW = 30;
+    private int height, width;
 
     public BallGroup(int number, int width, int height) {
+        this.height = height;
+        this.width = width;
         balls = new ArrayList<Ball>(number);
         populateBalls(number, width, height);
     }
 
     void populateBalls(int number, int width, int height){
+        this.height = height;
+        this.width = width;
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
 
@@ -50,7 +55,7 @@ public class BallGroup implements GameObject {
 
         Paint p2 = new Paint();
         p2.setColor(Color.MAGENTA);
-        canvas.drawCircle(canvas.getWidth(), canvas.getHeight(), 50, p2);
+        canvas.drawCircle(width, height, 50, p2);
 
         for (Ball ball : balls) {
             //int randx = (int)(Math.random() * 2);
@@ -58,7 +63,7 @@ public class BallGroup implements GameObject {
 
 
             int y = ball.getY() + 1;
-            y %= canvas.getHeight();
+            y %= height;
 
             ball.setY(y);
             ball.draw(canvas);
