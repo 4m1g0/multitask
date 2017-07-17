@@ -13,16 +13,16 @@ import android.view.ViewTreeObserver;
  * Created by cristian on 10/07/17.
  */
 
-public class CanvasHWAGamePanel extends View {
+public class CustomViewGamePanel extends View {
     private Paint paint;
     private BallGroup ballGroup;
 
-    public CanvasHWAGamePanel(Context context, @Nullable AttributeSet attrs) {
+    public CustomViewGamePanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         addTreeObserver();
     }
 
-    public CanvasHWAGamePanel(Context context) {
+    public CustomViewGamePanel(Context context) {
         super(context);
         addTreeObserver();
     }
@@ -41,7 +41,7 @@ public class CanvasHWAGamePanel extends View {
         paint = new Paint();
         paint.setColor(Color.RED);
         //setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        ballGroup = new BallGroup(2000, getWidth(), getHeight());
+        ballGroup = new BallGroup(Config.N_BOLAS, getWidth(), getHeight());
     }
 
     @Override

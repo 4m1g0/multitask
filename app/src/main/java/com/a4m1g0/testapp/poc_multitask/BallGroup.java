@@ -1,5 +1,6 @@
 package com.a4m1g0.testapp.poc_multitask;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,12 +20,26 @@ public class BallGroup implements GameObject {
     private int frames;
     private int FRAME_WINDOW = 30;
     private int height, width;
+    float hspace, vspace;
+    int N;
+    int initialPositionY = 0;
+    Bitmap cachedBitmap;
 
     public BallGroup(int number, int width, int height) {
         this.height = height;
         this.width = width;
         balls = new ArrayList<Ball>(number);
         populateBalls(number, width, height);
+
+        hspace = (float)((double)width / (double)number);
+        vspace = (float)((double)height / (double)number);
+        N = number;
+
+        cachedBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(cachedBitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.rgb(12,200,170));
+        c.drawCircle(50, 50, 50, paint);
     }
 
     void populateBalls(int number, int width, int height){
@@ -32,9 +47,6 @@ public class BallGroup implements GameObject {
         this.width = width;
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
-
-        double hspace = (double)width / (double)number;
-        double vspace = (double)height / (double)number;
 
         for (int i = 0; i < number; i++) {
             balls.add(new Ball((int)(hspace*(double)i),(int)(vspace*(double)i),50,paint));
@@ -49,25 +61,23 @@ public class BallGroup implements GameObject {
             printFPS();
         }
 
-        Paint p = new Paint();
-        p.setColor(Color.BLUE);
-        canvas.drawCircle(0,0, 50, p);
 
-        Paint p2 = new Paint();
-        p2.setColor(Color.MAGENTA);
-        canvas.drawCircle(width, height, 50, p2);
+        initialPositionY = ++initialPositionY % height;
+        canvas.translate(0, initialPositionY);
+        float currentPositionY = initialPositionY;
 
-        for (Ball ball : balls) {
-            //int randx = (int)(Math.random() * 2);
-            //int randx = (int)(Math.random() * 2);
-
-
-            int y = ball.getY() + 1;
-            y %= height;
-
-            ball.setY(y);
-            ball.draw(canvas);
+        for (int i = 0; i < N; i++) {
+            currentPositionY += vspace;
+            if (currentPositionY > height) {
+                canvas.translate(0, -currentPositionY);
+                currentPositionY = 0;
+            }
+            //Log.d(TAG, "" + canvas.getMatrix().toString());
+            canvas.translate(hspace, vspace);
+            canvas.drawBitmap(cachedBitmap, 0, 0, null);
         }
+
+
     }
 
     private void printFPS(){

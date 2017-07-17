@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
                 setContentView(R.layout.activity_main);
                 break;
             case SURFACE_VIEW_CANVAS:
-                setContentView(new GamePanel(this));
+                setContentView(new CustomSurfaceViewGamePanel(this));
                 break;
         }
     }

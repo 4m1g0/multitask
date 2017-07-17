@@ -1,7 +1,6 @@
 package com.a4m1g0.testapp.poc_multitask;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -12,13 +11,13 @@ class MainThread extends Thread {
     private static final int MAX_FPS = 30;
     private static final String TAG = "MainThread";
     private final SurfaceHolder surfaceHolder;
-    private GamePanel gamePanel;
+    private CustomSurfaceViewGamePanel customSurfaceViewGamePanel;
     private boolean isRunning;
 
-    public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
+    public MainThread(SurfaceHolder surfaceHolder, CustomSurfaceViewGamePanel customSurfaceViewGamePanel) {
         super();
         this.surfaceHolder = surfaceHolder;
-        this.gamePanel = gamePanel;
+        this.customSurfaceViewGamePanel = customSurfaceViewGamePanel;
     }
 
     public void setNotRunning() {
@@ -45,7 +44,7 @@ class MainThread extends Thread {
 
                 if (canvas != null) {
                     synchronized (surfaceHolder) {
-                        gamePanel.draw(canvas);
+                        customSurfaceViewGamePanel.draw(canvas);
                     }
                 }
             } catch (Exception e) {

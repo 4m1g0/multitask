@@ -9,12 +9,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+class CustomSurfaceViewGamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     Paint paint;
     BallGroup ballGroup;
 
-    public GamePanel(Context context) {
+    public CustomSurfaceViewGamePanel(Context context) {
         super(context);
 
         getHolder().addCallback(this);
@@ -23,7 +23,7 @@ class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         initialize();
     }
 
-    public GamePanel(Context context, AttributeSet attrs) {
+    public CustomSurfaceViewGamePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -34,7 +34,7 @@ class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        ballGroup = new BallGroup(4000, getWidth(), getHeight());
+        ballGroup = new BallGroup(Config.N_BOLAS, getWidth(), getHeight());
         thread.start();
     }
 
