@@ -5,4 +5,5 @@ import android.graphics.Canvas;
 public interface GameObject {
     void update(long time);
     void draw(Canvas canvas);
+    void click();
 }

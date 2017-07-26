@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 
 public class World implements GameObject {
 
-
     @Override
     public void update(long time) {
 
