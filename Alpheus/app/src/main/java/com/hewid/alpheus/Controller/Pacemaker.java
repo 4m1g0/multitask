@@ -1,10 +1,12 @@
 package com.hewid.alpheus.Controller;
+
 import com.hewid.alpheus.Model.Game.World;
 
-public class Pacemaker extends Thread implements FrameManager{
+public class Pacemaker implements FrameManager {
     private FrameManager view;
     private World world;
-    private Boolean isRunning;
+    private Boolean isRunning = false;
+    Thread updateThread, drawThread;
 
 
     public Pacemaker(World world) {
@@ -17,31 +19,61 @@ public class Pacemaker extends Thread implements FrameManager{
         this.world = world;
     }
 
-    public void kill(){
+    public void start() {
+        drawThread = new DrawThread();
+        drawThread.start();
+        updateThread = new UpdateThread();
+        updateThread.start();
+        isRunning = true;
+    }
+
+    public void kill() {
+        if (!isRunning)
+            return;
+
         this.isRunning = false;
-        this.interrupt();
+        updateThread.interrupt();
+        drawThread.interrupt();
+    }
+
+    private class UpdateThread extends Thread {
+
+        /**
+         * Generates a frame, after that, begins to {@code wait} and the view is responsible to call
+         * {@code notify} to inform this thread it has finished drawing and the next frame can start
+         * being generated.
+         */
+        @Override
+        public void run() {
+            long initialTime = System.currentTimeMillis();
+            while (isRunning && !isInterrupted()) {
+
+                // Call world to update the game state
+                world.update(System.currentTimeMillis() - initialTime);
+
+                synchronized (this) {
+                    try {
+                        // Wait until the view calls notify once the frame is drawn
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        isRunning = false;
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * Generates a frame and notify the view to invalidate previous frame and redraw,
-     * after that, this thread begins to {@code wait} and the view is responsible to call
-     * {@code notify} to inform this thread it has finished drawing and the next frame can start
-     * being generated.
+     * Each 16ms (60fps) invalidates the view so that it can draw the current state.
+     * No matter if the world is being updated at the same time.
      */
-    @Override
-    public void run() {
-        long initialTime = System.currentTimeMillis();
-        while (isRunning && !isInterrupted()) {
-
-            // Call world to update the game state
-            world.update(System.currentTimeMillis()-initialTime);
-
-            synchronized (this) {
-                // Notify the view that a new frame is available
+    private class DrawThread extends Thread {
+        @Override
+        public void run() {
+            while (isRunning && !isInterrupted()) {
                 view.notifyFrame();
                 try {
-                    // Wait until the view calls notify once the frame is drawn
-                    this.wait();
+                    Thread.sleep(16);
                 } catch (InterruptedException e) {
                     isRunning = false;
                 }
@@ -51,6 +83,7 @@ public class Pacemaker extends Thread implements FrameManager{
 
     /**
      * Registers the object this thread has to notify when a new frame is generated
+     *
      * @param frameManager The reference of the object to notify (normally the view)
      */
     @Override
@@ -63,6 +96,6 @@ public class Pacemaker extends Thread implements FrameManager{
      */
     @Override
     public void notifyFrame() {
-        this.notify();
+        updateThread.notify();
     }
 }
