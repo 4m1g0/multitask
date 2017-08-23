@@ -6,7 +6,8 @@ public class Pacemaker implements FrameManager {
     private FrameManager view;
     private World world;
     private Boolean isRunning = false;
-    Thread updateThread, drawThread;
+    UpdateThread updateThread;
+    DrawThread drawThread;
 
 
     public Pacemaker(World world) {
@@ -96,6 +97,8 @@ public class Pacemaker implements FrameManager {
      */
     @Override
     public void notifyFrame() {
-        updateThread.notify();
+        synchronized (updateThread) {
+            updateThread.notify();
+        }
     }
 }

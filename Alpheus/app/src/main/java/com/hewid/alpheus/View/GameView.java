@@ -33,15 +33,12 @@ public class GameView extends View implements FrameManager{
 
     @Override
     public void notifyFrame() {
-        this.invalidate();
+        this.postInvalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         world.draw(canvas);
-
-        synchronized (paceMaker) {
-            paceMaker.notifyFrame();
-        }
+        paceMaker.notifyFrame();
     }
 }
