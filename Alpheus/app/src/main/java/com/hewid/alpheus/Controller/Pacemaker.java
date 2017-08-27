@@ -1,23 +1,23 @@
 package com.hewid.alpheus.Controller;
 
-import com.hewid.alpheus.Model.Game.World;
+import com.hewid.alpheus.Model.Game.WorldManager;
 
 public class Pacemaker implements FrameManager {
     private FrameManager view;
-    private World world;
+    private WorldManager worldManager;
     private Boolean isRunning = false;
     UpdateThread updateThread;
     DrawThread drawThread;
 
 
-    public Pacemaker(World world) {
-        this.world = world;
+    public Pacemaker(WorldManager worldManager) {
+        this.worldManager = worldManager;
     }
 
-    public Pacemaker(World world, FrameManager view) {
+    public Pacemaker(WorldManager worldManager, FrameManager view) {
         view.register(this);
         this.view = view;
-        this.world = world;
+        this.worldManager = worldManager;
     }
 
     public void start() {
@@ -49,8 +49,8 @@ public class Pacemaker implements FrameManager {
             long initialTime = System.currentTimeMillis();
             while (isRunning && !isInterrupted()) {
 
-                // Call world to update the game state
-                world.update(System.currentTimeMillis() - initialTime);
+                // Call worldManager to update the game state
+                worldManager.update(System.currentTimeMillis() - initialTime);
 
                 synchronized (this) {
                     try {
@@ -66,7 +66,7 @@ public class Pacemaker implements FrameManager {
 
     /**
      * Each 16ms (60fps) invalidates the view so that it can draw the current state.
-     * No matter if the world is being updated at the same time.
+     * No matter if the worldManager is being updated at the same time.
      */
     private class DrawThread extends Thread {
         @Override

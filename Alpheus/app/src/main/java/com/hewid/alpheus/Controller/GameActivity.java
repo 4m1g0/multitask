@@ -1,16 +1,17 @@
 package com.hewid.alpheus.Controller;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.view.ViewTreeObserver;
 
-import com.hewid.alpheus.Model.Game.World;
+import com.hewid.alpheus.Model.Game.WorldManager;
 import com.hewid.alpheus.R;
 import com.hewid.alpheus.View.GameView;
 
 public class GameActivity extends AppCompatActivity {
     Pacemaker pacemaker;
-    World world;
+    WorldManager worldManager;
     GameView view;
 
     @Override
@@ -18,13 +19,24 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        world = new World();
-        pacemaker = new Pacemaker(world);
         view = (GameView) findViewById(R.id.game_view);
-        view.attachWorld(world);
-        view.register(pacemaker);
-        //view.setOnTouchListener(new TouchListener(world));
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
 
-        pacemaker.start();
+                worldManager = new WorldManager(view.getHeight(), view.getWidth());
+                pacemaker = new Pacemaker(worldManager);
+                view.attachWorld(worldManager);
+                view.register(pacemaker);
+                //view.setOnTouchListener(new TouchListener(worldManager));
+
+                pacemaker.start();
+            }
+        });
     }
 }

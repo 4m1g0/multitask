@@ -7,11 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.hewid.alpheus.Controller.FrameManager;
-import com.hewid.alpheus.Model.Game.World;
+import com.hewid.alpheus.Model.Game.WorldManager;
 
 public class GameView extends View implements FrameManager{
     FrameManager paceMaker;
-    private World world;
+    private WorldManager worldManager;
 
     public GameView(Context context) {
         super(context);
@@ -21,8 +21,9 @@ public class GameView extends View implements FrameManager{
         super(context, attrs);
     }
 
-    public void attachWorld(World world) {
-        this.world = world;
+    public void attachWorld(final WorldManager worldManager) {
+        this.worldManager = worldManager;
+
     }
 
     @Override
@@ -38,7 +39,7 @@ public class GameView extends View implements FrameManager{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        world.draw(canvas);
+        worldManager.draw(canvas);
         paceMaker.notifyFrame();
     }
 }
