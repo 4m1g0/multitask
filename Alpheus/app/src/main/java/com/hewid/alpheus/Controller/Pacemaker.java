@@ -23,9 +23,10 @@ public class Pacemaker implements FrameManager {
     public void start() {
         drawThread = new DrawThread();
         updateThread = new UpdateThread();
+
+        isRunning = true;
         drawThread.start();
         updateThread.start();
-        isRunning = true;
     }
 
     public void kill() {

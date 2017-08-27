@@ -23,7 +23,6 @@ public class GameView extends View implements FrameManager{
 
     public void attachWorld(final WorldManager worldManager) {
         this.worldManager = worldManager;
-
     }
 
     @Override
