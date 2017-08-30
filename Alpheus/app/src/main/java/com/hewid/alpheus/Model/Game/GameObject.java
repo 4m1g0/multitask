@@ -7,5 +7,5 @@ public interface GameObject {
     void update(long time);
     void draw(Canvas canvas);
 
-    void touch(MotionEvent event);
+    boolean touch(MotionEvent event);
 }
