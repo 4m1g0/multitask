@@ -4,7 +4,7 @@ public abstract class World implements GameObject {
     protected int height;
     protected int width;
 
-    public World(int height, int width) {
+    public void setSize(int width, int height) {
         this.height = height;
         this.width = width;
     }

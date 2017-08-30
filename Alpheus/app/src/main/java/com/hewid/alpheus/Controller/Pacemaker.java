@@ -6,8 +6,13 @@ public class Pacemaker implements FrameManager {
     private FrameManager view;
     private WorldManager worldManager;
     private Boolean isRunning = false;
-    UpdateThread updateThread;
-    DrawThread drawThread;
+    private UpdateThread updateThread;
+    private DrawThread drawThread;
+    private long initialTime;
+    private long pauseTime;
+    private boolean isPaused;
+    private final Object pauseMutex = new Object();
+    private Object frameMutex = new Object();
 
 
     public Pacemaker(WorldManager worldManager) {
@@ -21,9 +26,8 @@ public class Pacemaker implements FrameManager {
     }
 
     public void start() {
-        drawThread = new DrawThread();
         updateThread = new UpdateThread();
-
+        drawThread = new DrawThread();
         isRunning = true;
         drawThread.start();
         updateThread.start();
@@ -38,6 +42,21 @@ public class Pacemaker implements FrameManager {
         drawThread.interrupt();
     }
 
+    public void resume() {
+        initialTime += System.currentTimeMillis() - pauseTime;
+        synchronized (pauseMutex) {
+            isPaused = false;
+            pauseMutex.notifyAll();
+        }
+    }
+
+    public void pause() {
+        synchronized (pauseMutex){
+            isPaused = true;
+        }
+        pauseTime = System.currentTimeMillis();
+    }
+
     private class UpdateThread extends Thread {
 
         /**
@@ -47,18 +66,27 @@ public class Pacemaker implements FrameManager {
          */
         @Override
         public void run() {
-            long initialTime = System.currentTimeMillis();
             while (isRunning && !isInterrupted()) {
-
                 // Call worldManager to update the game state
                 worldManager.update(System.currentTimeMillis() - initialTime);
 
-                synchronized (this) {
+                synchronized (frameMutex) {
                     try {
                         // Wait until the view calls notify once the frame is drawn
-                        this.wait();
+                        frameMutex.wait();
                     } catch (InterruptedException e) {
-                        isRunning = false;
+                        break;
+                    }
+                }
+
+                synchronized (pauseMutex) {
+                    try {
+                        if (isPaused){
+                            // game is in pause, wait until notify
+                            pauseMutex.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        break;
                     }
                 }
             }
@@ -77,7 +105,18 @@ public class Pacemaker implements FrameManager {
                 try {
                     Thread.sleep(16);
                 } catch (InterruptedException e) {
-                    isRunning = false;
+                    break;
+                }
+
+                synchronized (pauseMutex) {
+                    try {
+                        if (isPaused){
+                            // game is in pause, wait until notify
+                            pauseMutex.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        break;
+                    }
                 }
             }
         }
@@ -98,8 +137,8 @@ public class Pacemaker implements FrameManager {
      */
     @Override
     public void notifyFrame() {
-        synchronized (updateThread) {
-            updateThread.notify();
+        synchronized (frameMutex) {
+            frameMutex.notify();
         }
     }
 }

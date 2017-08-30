@@ -10,11 +10,18 @@ public class WorldManager extends World {
     private List<World> subworlds;
     private int n = 1;
 
-    public WorldManager(int height, int width) {
-        super(height, width);
-
+    public WorldManager() {
         subworlds = new ArrayList<>();
-        subworlds.add(new SubworldTest(height, width));
+        subworlds.add(new SubworldTest());
+    }
+
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+
+        for (int i = 0; i < n; i++) {
+            subworlds.get(i).setSize(width, height);
+        }
     }
 
     @Override

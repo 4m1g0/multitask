@@ -11,9 +11,7 @@ class SubworldTest extends World {
     private int[] position = new int[2];
     private float[] speed = new float[]{0.5f, 0.5f};
 
-    public SubworldTest(int height, int width) {
-        super(height, width);
-
+    public SubworldTest() {
         catchedBitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(catchedBitmap);
         Paint paint = new Paint();
