@@ -1,11 +1,13 @@
 package com.hewid.alpheus.Controller;
 
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 
+import com.hewid.alpheus.Model.Game.HardwareManager;
 import com.hewid.alpheus.Model.Game.WorldManager;
 import com.hewid.alpheus.R;
 import com.hewid.alpheus.View.GameView;
@@ -21,7 +23,9 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         view = (GameView) findViewById(R.id.game_view);
 
-        worldManager = new WorldManager();
+
+        HardwareManager hardwareManager = new HardwareManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
+        worldManager = new WorldManager(hardwareManager);
         pacemaker = new Pacemaker(worldManager);
         view.attachWorld(worldManager);
         view.register(pacemaker);

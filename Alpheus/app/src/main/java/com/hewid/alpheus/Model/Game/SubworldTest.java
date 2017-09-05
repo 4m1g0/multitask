@@ -11,7 +11,8 @@ class SubworldTest extends World {
     private int[] position = new int[2];
     private float[] speed = new float[]{0.5f, 0.5f};
 
-    public SubworldTest() {
+    public SubworldTest(GameEventHandler gameEventHandler) {
+        super(gameEventHandler);
         catchedBitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(catchedBitmap);
         Paint paint = new Paint();
@@ -33,5 +34,10 @@ class SubworldTest extends World {
     @Override
     public void touch(MotionEvent event) {
 
+    }
+
+    @Override
+    public void handleEvent(GameEvent event) {
+        gameEventHandler.handleEvent(event);
     }
 }

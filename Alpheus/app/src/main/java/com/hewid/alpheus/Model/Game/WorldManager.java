@@ -9,10 +9,12 @@ import java.util.List;
 public class WorldManager extends World {
     private List<World> subworlds;
     private int n = 1;
+    private HardwareManager hardwareManager;
 
-    public WorldManager() {
+    public WorldManager(HardwareManager hardwareManager) {
+        this.hardwareManager = hardwareManager;
         subworlds = new ArrayList<>();
-        subworlds.add(new SubworldTest());
+        subworlds.add(new SubworldTest(this));
     }
 
     @Override
@@ -45,5 +47,12 @@ public class WorldManager extends World {
     @Override
     public void touch(MotionEvent event) {
 
+    }
+
+    @Override
+    public void handleEvent(GameEvent event) {
+        if (event.getAction() == HewidGameEvent.POSITIVE_REINFORCEMENT) {
+            hardwareManager.vibrate(10);
+        }
     }
 }
