@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.MotionEvent;
 
 class SubworldTest extends World {
     private Bitmap catchedBitmap;
     private int[] position = new int[2];
-    private float[] speed = new float[]{0.5f, 0.5f};
+    private float[] speed = new float[]{1f, 1f};
 
     public SubworldTest(GameEventHandler gameEventHandler) {
         super(gameEventHandler);
@@ -32,8 +34,16 @@ class SubworldTest extends World {
     }
 
     @Override
-    public void touch(MotionEvent event) {
+    public boolean touch(MotionEvent event) {
+        int[] ballCenter = {position[0] + 50, position[1] + 50};
+        double distance = Math.sqrt(Math.pow(ballCenter[0] - event.getX(), 2) + Math.pow(ballCenter[1] - event.getY(), 2));
 
+        if (distance <= 50){
+            gameEventHandler.handleEvent(new GameEvent(HewidGameEvent.POSITIVE_REINFORCEMENT));
+            return true;
+        }
+
+        return false;
     }
 
     @Override

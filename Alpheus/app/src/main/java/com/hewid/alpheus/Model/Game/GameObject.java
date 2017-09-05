@@ -17,5 +17,5 @@ public abstract class GameObject {
     public abstract void update(long time);
     public abstract void draw(Canvas canvas);
 
-    public abstract void touch(MotionEvent event);
+    public abstract boolean touch(MotionEvent event);
 }
