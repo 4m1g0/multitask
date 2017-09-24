@@ -3,7 +3,7 @@ package com.hewid.alpheus.Model.Game;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
-public abstract class GameObject {
+public abstract class GameObject implements InteractionEventHandler{
 
     protected GameEventHandler gameEventHandler;
 
@@ -16,6 +16,4 @@ public abstract class GameObject {
 
     public abstract void update(long time);
     public abstract void draw(Canvas canvas);
-
-    public abstract boolean touch(MotionEvent event);
 }

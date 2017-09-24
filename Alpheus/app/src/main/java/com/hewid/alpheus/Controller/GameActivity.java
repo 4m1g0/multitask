@@ -29,7 +29,6 @@ public class GameActivity extends AppCompatActivity {
         pacemaker = new Pacemaker(worldManager);
         view.attachWorld(worldManager);
         view.register(pacemaker);
-        //view.setOnTouchListener(new TouchListener(worldManager));
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

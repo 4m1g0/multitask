@@ -1,13 +1,12 @@
 package com.hewid.alpheus.Model.Game;
 
-public class GameEvent {
-    private int action;
+public class GameEvent extends Event {
 
     public GameEvent(int action) {
-        this.action = action;
+        super(action);
     }
 
-    public int getAction() {
-        return action;
-    }
+    public static final int GAME_OVER = 0;
+    public static final int POSITIVE_REINFORCEMENT = 1;
+    public static final int NEGATIVE_REINFORCEMENT = 2;
 }

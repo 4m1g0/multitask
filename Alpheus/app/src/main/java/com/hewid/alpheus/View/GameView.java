@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.hewid.alpheus.Controller.FrameManager;
+import com.hewid.alpheus.Model.Game.InteractionEvent;
 import com.hewid.alpheus.Model.Game.WorldManager;
 
 public class GameView extends View implements FrameManager {
@@ -47,7 +48,8 @@ public class GameView extends View implements FrameManager {
     public boolean onTouchEvent(MotionEvent event) {
 
         if (worldManager != null) {
-            worldManager.touch(event);
+
+            worldManager.handleInteractionEvent(new InteractionEvent(InteractionEvent.TOUCH, event));
         }
 
         return true;
