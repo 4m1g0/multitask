@@ -10,6 +10,7 @@ public abstract class Event  {
 
     public Event(int action, Object payload) {
         this.payload = payload;
+        this.action = action;
     }
 
     public int getAction() {

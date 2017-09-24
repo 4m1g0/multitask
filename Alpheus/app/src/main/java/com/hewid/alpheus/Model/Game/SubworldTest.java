@@ -38,15 +38,16 @@ class SubworldTest extends World {
 
     @Override
     public boolean handleInteractionEvent(InteractionEvent event) {
-        MotionEvent motionEvent = (MotionEvent) event.getPayload();
-        int[] ballCenter = {position[0] + 50, position[1] + 50};
-        double distance = Math.sqrt(Math.pow(ballCenter[0] - motionEvent.getX(), 2) + Math.pow(ballCenter[1] - motionEvent.getY(), 2));
+        if (event.getAction() == InteractionEvent.TOUCH) {
+            MotionEvent motionEvent = (MotionEvent) event.getPayload();
+            int[] ballCenter = {position[0] + 50, position[1] + 50};
+            double distance = Math.sqrt(Math.pow(ballCenter[0] - motionEvent.getX(), 2) + Math.pow(ballCenter[1] - motionEvent.getY(), 2));
 
-        if (distance <= 50){
-            gameEventHandler.handleGameEvent(new GameEvent(GameEvent.POSITIVE_REINFORCEMENT));
-            return true;
+            if (distance <= 50){
+                gameEventHandler.handleGameEvent(new GameEvent(GameEvent.POSITIVE_REINFORCEMENT));
+                return true;
+            }
         }
-
         return false;
     }
 }

@@ -1,33 +1,42 @@
 package com.hewid.alpheus.Model.Game;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
+
+import com.hewid.alpheus.Model.Game.SeesawWorld.SeesawWorld;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorldManager extends World {
     private List<World> subworlds;
-    private int n = 1;
+    private int n = 2;
     private HardwareManager hardwareManager;
 
     public WorldManager(HardwareManager hardwareManager) {
         this.hardwareManager = hardwareManager;
         subworlds = new ArrayList<>();
+
         subworlds.add(new SubworldTest(this));
+        subworlds.add(new SeesawWorld(this));
+
     }
 
     @Override
-    public void setSize(int width, int height) {
-        super.setSize(width, height);
+    public void start(int width, int height) {
+        super.start(width, height);
 
         for (int i = 0; i < n; i++) {
-            subworlds.get(i).setSize(width, height);
+            subworlds.get(i).start(width, height);
         }
+
+        started = true;
     }
 
     @Override
     public void update(long time) {
+        if (!started)
+            return;
+
         //if (time %12) n++
 
         for (int i = 0; i < n; i++) {
@@ -37,6 +46,9 @@ public class WorldManager extends World {
 
     @Override
     public void draw(Canvas canvas) {
+        if (!started)
+            return;
+
         //if (time %12) n++
 
         for (int i = 0; i < n; i++) {

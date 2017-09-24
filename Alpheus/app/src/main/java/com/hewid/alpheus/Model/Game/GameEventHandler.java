@@ -1,5 +1,5 @@
 package com.hewid.alpheus.Model.Game;
 
-interface GameEventHandler {
+public interface GameEventHandler {
     void handleGameEvent(GameEvent event);
 }
