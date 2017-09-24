@@ -11,6 +11,7 @@ public class WorldManager extends World {
     private List<World> subworlds;
     private int n = 2;
     private HardwareManager hardwareManager;
+    private boolean isGameOver;
 
     public WorldManager(HardwareManager hardwareManager) {
         this.hardwareManager = hardwareManager;
@@ -34,7 +35,7 @@ public class WorldManager extends World {
 
     @Override
     public void update(long time) {
-        if (!started)
+        if (!started || isGameOver)
             return;
 
         //if (time %12) n++
@@ -58,8 +59,16 @@ public class WorldManager extends World {
 
     @Override
     public void handleGameEvent(GameEvent event) {
-        if (event.getAction() == GameEvent.POSITIVE_REINFORCEMENT) {
-            hardwareManager.vibrate(200);
+        switch(event.getAction()){
+            case GameEvent.POSITIVE_REINFORCEMENT:
+                hardwareManager.vibrate(200);
+                break;
+            case GameEvent.GAME_OVER:
+                // This 'isGameOver' should not be here, It should exist
+                // another mechanism to do this...
+                this.isGameOver = true;
+                hardwareManager.vibrate(400);
+                break;
         }
     }
 

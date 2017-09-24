@@ -6,14 +6,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.SensorEvent;
 
+import com.hewid.alpheus.Model.Game.GameEvent;
 import com.hewid.alpheus.Model.Game.GameEventHandler;
 import com.hewid.alpheus.Model.Game.GameObject;
 import com.hewid.alpheus.Model.Game.InteractionEvent;
 
-public class Ball extends GameObject{
+public class Ball extends GameObject {
     private Bitmap catchedBitmap;
     private Platform platform;
     private int height;
+    private int width;
     private final int ballDiameter = 100;
     private int position;
     private float acceleration;
@@ -22,14 +24,16 @@ public class Ball extends GameObject{
     public Ball(GameEventHandler gameEventHandler, Platform platform, int height, int width) {
         super(gameEventHandler);
 
-        catchedBitmap = Bitmap.createBitmap(100,100,Bitmap.Config.ARGB_8888);
+        catchedBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(catchedBitmap);
         Paint paint = new Paint();
-        paint.setColor(Color.rgb(200,10,10));
-        c.drawCircle(50,50,50,paint);
+        paint.setColor(Color.rgb(200, 10, 10));
+        paint.setAntiAlias(true);
+        c.drawCircle(50, 50, 50, paint);
         this.platform = platform;
         this.height = height;
-        this.position = width/2-ballDiameter/2;
+        this.width = width;
+        this.position = width / 2 - ballDiameter / 2;
     }
 
     @Override
@@ -44,12 +48,23 @@ public class Ball extends GameObject{
 
     @Override
     public void update(long time) {
-        speed += (acceleration/100) * ((double)time / 10000);
-        position += speed * ((double)time /10000);
+        speed += (acceleration / 100) * ((double) time / 10000);
+        position += speed * ((double) time / 10000);
+
+        if (isBallOutOfPlatform()) {
+            gameEventHandler.handleGameEvent(new GameEvent(GameEvent.GAME_OVER));
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(catchedBitmap, position, height-platform.getHeight()-ballDiameter, null);
+        canvas.drawBitmap(catchedBitmap, position, height - platform.getHeight() - ballDiameter, null);
+    }
+
+    private boolean isBallOutOfPlatform() {
+        int centerBallPosition = position + ballDiameter / 2;
+
+        return (centerBallPosition < (this.width - platform.getWidth()) / 2) ||
+                (centerBallPosition > platform.getWidth() + (this.width - platform.getWidth()) / 2);
     }
 }
