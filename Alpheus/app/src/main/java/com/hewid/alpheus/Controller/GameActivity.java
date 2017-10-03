@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewTreeObserver;
 
 import com.hewid.alpheus.Model.Game.HardwareManager;
@@ -84,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
-
+        
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             worldManager.handleInteractionEvent(new InteractionEvent(InteractionEvent.ACCELEROMETER, event));
         }
@@ -92,6 +93,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        Log.d("TAGER", "accuracy: " + accuracy);
     }
 }

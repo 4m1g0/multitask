@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.SensorEvent;
+import android.util.Log;
 
 import com.hewid.alpheus.Model.Game.GameEvent;
 import com.hewid.alpheus.Model.Game.GameEventHandler;
@@ -18,8 +19,14 @@ public class Ball extends GameObject {
     private int width;
     private final int ballDiameter = 100;
     private int position;
-    private float acceleration;
+    private float acceleration, accelerationAccomulation;
     private float speed;
+    private int nValues;
+    private final float RANDOMACC = 0.15f;
+    private final int RANDOMTIME = 5000;
+    private long lastRandomTime;
+    private double currentRandAcc;
+    private long lastUpdateTime;
 
     public Ball(GameEventHandler gameEventHandler, Platform platform, int height, int width) {
         super(gameEventHandler);
@@ -41,15 +48,48 @@ public class Ball extends GameObject {
         if (event.getAction() == InteractionEvent.ACCELEROMETER) {
             SensorEvent acc = (SensorEvent) event.getPayload();
 
-            acceleration = acc.values[1];
+            synchronized (this) {
+                accelerationAccomulation += acc.values[1];
+                nValues++;
+            }
         }
         return false;
     }
 
+    private synchronized void calculateMeanAcceleration(){
+        if (nValues == 0){
+            acceleration = accelerationAccomulation;
+            return;
+        }
+
+        acceleration = accelerationAccomulation / nValues;
+        accelerationAccomulation = 0;
+        nValues = 0;
+    }
+    
+    private void randomizeAcceleration(long time){
+        if (time - lastRandomTime > RANDOMTIME) {
+            lastRandomTime = time;
+            currentRandAcc = Math.random()*RANDOMACC*2-RANDOMACC;
+        } else {
+            acceleration += currentRandAcc;
+        }
+    }
+
     @Override
     public void update(long time) {
-        speed += (acceleration / 100) * ((double) time / 10000);
-        position += speed * ((double) time / 10000);
+        long elapsedTime = time - lastUpdateTime;
+        lastUpdateTime = time;
+        calculateMeanAcceleration();
+        randomizeAcceleration(time);
+        speed += acceleration * ((float) elapsedTime / 20);
+        if (Math.abs(speed) < 0.1){
+            if (acceleration > 0)
+                speed = 0.2f;
+            else
+                speed = -0.2f;
+        }
+        position += speed * ((double) elapsedTime / 20);
 
         if (isBallOutOfPlatform()) {
             gameEventHandler.handleGameEvent(new GameEvent(GameEvent.GAME_OVER));
