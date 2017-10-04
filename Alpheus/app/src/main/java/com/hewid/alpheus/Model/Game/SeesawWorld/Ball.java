@@ -15,8 +15,6 @@ import com.hewid.alpheus.Model.Game.InteractionEvent;
 public class Ball extends GameObject {
     private Bitmap catchedBitmap;
     private Platform platform;
-    private int height;
-    private int width;
     private final int ballDiameter = 100;
     private int position;
     private float acceleration, accelerationAccomulation;
@@ -28,8 +26,14 @@ public class Ball extends GameObject {
     private double currentRandAcc;
     private long lastUpdateTime;
 
-    public Ball(GameEventHandler gameEventHandler, Platform platform, int height, int width) {
+    public Ball(GameEventHandler gameEventHandler, Platform platform) {
         super(gameEventHandler);
+        this.platform = platform;
+    }
+
+    @Override
+    public void start(int width, int height) {
+        super.start(width, height);
 
         catchedBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(catchedBitmap);
@@ -37,9 +41,6 @@ public class Ball extends GameObject {
         paint.setColor(Color.rgb(200, 10, 10));
         paint.setAntiAlias(true);
         c.drawCircle(50, 50, 50, paint);
-        this.platform = platform;
-        this.height = height;
-        this.width = width;
         this.position = width / 2 - ballDiameter / 2;
     }
 

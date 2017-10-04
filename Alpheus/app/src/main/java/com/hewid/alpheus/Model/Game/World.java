@@ -1,19 +1,22 @@
 package com.hewid.alpheus.Model.Game;
 
 public abstract class World extends GameObject implements GameEventHandler {
-    protected int height;
-    protected int width;
-    protected boolean started = false;
+    private boolean started = false;
 
     public World() {
     }
 
-    public World(GameEventHandler gameEventHandler) {
-        super(gameEventHandler);
+    protected boolean isStarted(){
+        return started;
     }
 
+    @Override
     public void start(int width, int height) {
-        this.height = height;
-        this.width = width;
+        super.start(width, height);
+        started = true;
+    }
+
+    public World(GameEventHandler gameEventHandler) {
+        super(gameEventHandler);
     }
 }

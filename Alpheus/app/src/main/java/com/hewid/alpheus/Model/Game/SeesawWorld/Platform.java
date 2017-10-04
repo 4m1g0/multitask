@@ -13,7 +13,10 @@ public class Platform extends GameObject {
     private Rect platform;
     private Paint paint;
 
-    public Platform(int width, int height) {
+    @Override
+    public void start(int width, int height) {
+        super.start(width, height);
+
         platformHeight = 30;
         platformWidth = width / 2;
         paint = new Paint();

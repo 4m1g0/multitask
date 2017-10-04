@@ -13,15 +13,17 @@ public class SeesawWorld extends World {
 
     public SeesawWorld(GameEventHandler gameEventHandler) {
         super(gameEventHandler);
+
+        platform = new Platform();
+        ball = new Ball(this, platform);
     }
 
     @Override
     public void start(int width, int height) {
         super.start(width, height);
 
-        platform = new Platform(width, height);
-        ball = new Ball(this, platform, height, width);
-        started = true;
+        platform.start(width, height);
+        ball.start(width, height);
     }
 
     @Override
@@ -31,9 +33,6 @@ public class SeesawWorld extends World {
 
     @Override
     public boolean handleInteractionEvent(InteractionEvent event) {
-        if (!started)
-            return true;
-
         if (event.getAction() == InteractionEvent.ACCELEROMETER){
             return ball.handleInteractionEvent(event);
         }
@@ -43,18 +42,12 @@ public class SeesawWorld extends World {
 
     @Override
     public void update(long time) {
-        if (!started)
-            return;
-
         platform.update(time);
         ball.update(time);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (!started)
-            return;
-
         platform.draw(canvas);
         ball.draw(canvas);
     }

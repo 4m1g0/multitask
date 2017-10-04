@@ -19,7 +19,6 @@ public class WorldManager extends World {
 
         subworlds.add(new SubworldTest(this));
         subworlds.add(new SeesawWorld(this));
-
     }
 
     @Override
@@ -29,13 +28,11 @@ public class WorldManager extends World {
         for (int i = 0; i < n; i++) {
             subworlds.get(i).start(width, height);
         }
-
-        started = true;
     }
 
     @Override
     public void update(long time) {
-        if (!started || isGameOver)
+        if (isGameOver)
             return;
 
         //if (time %12) n++
@@ -47,7 +44,7 @@ public class WorldManager extends World {
 
     @Override
     public void draw(Canvas canvas) {
-        if (!started)
+        if (!isStarted())
             return;
 
         //if (time %12) n++

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 
 import com.hewid.alpheus.Model.Game.HardwareManager;
@@ -48,6 +47,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                 }
 
                 worldManager.start(view.getWidth(), view.getHeight());
+                pacemaker.start();
             }
         });
 
@@ -57,8 +57,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onRestart() {
+        super.onRestart();
         pacemaker.start();
     }
 
@@ -93,6 +93,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.d("TAGER", "accuracy: " + accuracy);
+
     }
 }
