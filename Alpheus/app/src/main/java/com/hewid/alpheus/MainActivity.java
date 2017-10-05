@@ -1,11 +1,9 @@
-package com.hewid.alpheus.Controller;
+package com.hewid.alpheus;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import com.hewid.alpheus.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playClick(View view) {
-        Intent i = new Intent(this, GameActivity.class);
+        Intent i = new Intent(this, MultitaskActivity.class);
         startActivity(i);
     }
 }

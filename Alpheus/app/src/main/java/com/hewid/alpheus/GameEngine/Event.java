@@ -1,4 +1,4 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.GameEngine;
 
 public abstract class Event  {
     private int action;

@@ -1,16 +1,15 @@
-package com.hewid.alpheus.Model.Game.SeesawWorld;
+package com.hewid.alpheus.Game.SeesawWorld;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.SensorEvent;
-import android.util.Log;
 
-import com.hewid.alpheus.Model.Game.GameEvent;
-import com.hewid.alpheus.Model.Game.GameEventHandler;
-import com.hewid.alpheus.Model.Game.GameObject;
-import com.hewid.alpheus.Model.Game.InteractionEvent;
+import com.hewid.alpheus.GameEngine.GameEvent;
+import com.hewid.alpheus.GameEngine.GameEventHandler;
+import com.hewid.alpheus.GameEngine.GameObject;
+import com.hewid.alpheus.GameEngine.InteractionEvent;
 
 public class Ball extends GameObject {
     private Bitmap catchedBitmap;

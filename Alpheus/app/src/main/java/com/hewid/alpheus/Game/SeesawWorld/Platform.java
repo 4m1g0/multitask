@@ -1,12 +1,12 @@
-package com.hewid.alpheus.Model.Game.SeesawWorld;
+package com.hewid.alpheus.Game.SeesawWorld;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.hewid.alpheus.Model.Game.GameObject;
-import com.hewid.alpheus.Model.Game.InteractionEvent;
+import com.hewid.alpheus.GameEngine.GameObject;
+import com.hewid.alpheus.GameEngine.InteractionEvent;
 
 public class Platform extends GameObject {
     private int platformHeight, platformWidth;

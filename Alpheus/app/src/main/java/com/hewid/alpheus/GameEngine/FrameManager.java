@@ -1,4 +1,4 @@
-package com.hewid.alpheus.Controller;
+package com.hewid.alpheus.GameEngine;
 
 public interface FrameManager {
     void register(FrameManager frameManager);

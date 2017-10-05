@@ -1,8 +1,11 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.Game;
 
 import android.graphics.Canvas;
 
-import com.hewid.alpheus.Model.Game.SeesawWorld.SeesawWorld;
+import com.hewid.alpheus.GameEngine.GameEvent;
+import com.hewid.alpheus.GameEngine.InteractionEvent;
+import com.hewid.alpheus.GameEngine.World;
+import com.hewid.alpheus.Game.SeesawWorld.SeesawWorld;
 
 import java.util.ArrayList;
 import java.util.List;

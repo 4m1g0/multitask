@@ -1,11 +1,11 @@
-package com.hewid.alpheus.Model.Game.SeesawWorld;
+package com.hewid.alpheus.Game.SeesawWorld;
 
 import android.graphics.Canvas;
 
-import com.hewid.alpheus.Model.Game.GameEvent;
-import com.hewid.alpheus.Model.Game.GameEventHandler;
-import com.hewid.alpheus.Model.Game.InteractionEvent;
-import com.hewid.alpheus.Model.Game.World;
+import com.hewid.alpheus.GameEngine.GameEvent;
+import com.hewid.alpheus.GameEngine.GameEventHandler;
+import com.hewid.alpheus.GameEngine.InteractionEvent;
+import com.hewid.alpheus.GameEngine.World;
 
 public class SeesawWorld extends World {
     Ball ball;

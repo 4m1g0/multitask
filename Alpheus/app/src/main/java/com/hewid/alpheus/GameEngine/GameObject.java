@@ -1,9 +1,8 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.GameEngine;
 
 import android.graphics.Canvas;
-import android.view.MotionEvent;
 
-public abstract class GameObject implements InteractionEventHandler{
+public abstract class GameObject implements InteractionEventHandler {
     protected GameEventHandler gameEventHandler;
     protected int height;
     protected int width;

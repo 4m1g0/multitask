@@ -1,4 +1,4 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.Game;
 
 import android.os.Vibrator;
 

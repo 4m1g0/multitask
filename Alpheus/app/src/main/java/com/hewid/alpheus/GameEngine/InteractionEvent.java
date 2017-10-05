@@ -1,4 +1,6 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.GameEngine;
+
+import com.hewid.alpheus.GameEngine.Event;
 
 public class InteractionEvent extends Event {
 

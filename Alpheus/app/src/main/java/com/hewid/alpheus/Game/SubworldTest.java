@@ -1,10 +1,15 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.Game;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
+
+import com.hewid.alpheus.GameEngine.GameEvent;
+import com.hewid.alpheus.GameEngine.GameEventHandler;
+import com.hewid.alpheus.GameEngine.InteractionEvent;
+import com.hewid.alpheus.GameEngine.World;
 
 class SubworldTest extends World {
     private Bitmap catchedBitmap;

@@ -1,4 +1,4 @@
-package com.hewid.alpheus.View;
+package com.hewid.alpheus.GameEngine;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,13 +7,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.hewid.alpheus.Controller.FrameManager;
-import com.hewid.alpheus.Model.Game.InteractionEvent;
-import com.hewid.alpheus.Model.Game.WorldManager;
-
 public class GameView extends View implements FrameManager {
     FrameManager paceMaker;
-    private WorldManager worldManager;
+    private World world;
 
     public GameView(Context context) {
         super(context);
@@ -23,8 +19,8 @@ public class GameView extends View implements FrameManager {
         super(context, attrs);
     }
 
-    public void attachWorld(final WorldManager worldManager) {
-        this.worldManager = worldManager;
+    public void attachWorld(final World world) {
+        this.world = world;
     }
 
     @Override
@@ -40,16 +36,14 @@ public class GameView extends View implements FrameManager {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        worldManager.draw(canvas);
+        world.draw(canvas);
         paceMaker.notifyFrame();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        if (worldManager != null) {
-
-            worldManager.handleInteractionEvent(new InteractionEvent(InteractionEvent.TOUCH, event));
+        if (world != null) {
+            world.handleInteractionEvent(new InteractionEvent(InteractionEvent.TOUCH, event));
         }
 
         return true;

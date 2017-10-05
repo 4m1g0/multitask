@@ -1,4 +1,7 @@
-package com.hewid.alpheus.Model.Game;
+package com.hewid.alpheus.GameEngine;
+
+import com.hewid.alpheus.GameEngine.GameEventHandler;
+import com.hewid.alpheus.GameEngine.GameObject;
 
 public abstract class World extends GameObject implements GameEventHandler {
     private boolean started = false;

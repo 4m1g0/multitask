@@ -1,24 +1,19 @@
-package com.hewid.alpheus.Controller;
+package com.hewid.alpheus.GameEngine;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
-import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewTreeObserver;
 
-import com.hewid.alpheus.Model.Game.HardwareManager;
-import com.hewid.alpheus.Model.Game.InteractionEvent;
-import com.hewid.alpheus.Model.Game.WorldManager;
 import com.hewid.alpheus.R;
-import com.hewid.alpheus.View.GameView;
 
-public class GameActivity extends AppCompatActivity implements SensorEventListener {
+public abstract class GameActivity extends AppCompatActivity implements SensorEventListener {
     private Pacemaker pacemaker;
-    private WorldManager worldManager;
+    private World world;
     private GameView view;
 
     private SensorManager senSensorManager;
@@ -29,12 +24,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         view = (GameView) findViewById(R.id.game_view);
-
-
-        HardwareManager hardwareManager = new HardwareManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
-        worldManager = new WorldManager(hardwareManager);
-        pacemaker = new Pacemaker(worldManager);
-        view.attachWorld(worldManager);
+        onWorldCreate();
+        pacemaker = new Pacemaker(world);
+        view.attachWorld(world);
         view.register(pacemaker);
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -46,7 +38,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
                     view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
-                worldManager.start(view.getWidth(), view.getHeight());
+                world.start(view.getWidth(), view.getHeight());
                 pacemaker.start();
             }
         });
@@ -54,6 +46,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         senSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    protected abstract void onWorldCreate();
+
+    protected void setWorld(World world){
+        this.world = world;
     }
 
     @Override
@@ -87,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         Sensor sensor = event.sensor;
         
         if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            worldManager.handleInteractionEvent(new InteractionEvent(InteractionEvent.ACCELEROMETER, event));
+            world.handleInteractionEvent(new InteractionEvent(InteractionEvent.ACCELEROMETER, event));
         }
     }
 
