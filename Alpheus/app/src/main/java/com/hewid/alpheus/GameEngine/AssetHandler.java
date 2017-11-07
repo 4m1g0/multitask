@@ -18,6 +18,7 @@ class AssetHandler {
 
     public static Bitmap getBitmap(String assetName) {
         try {
+
             InputStream bmpStream = assetManager.open(assetName, AssetManager.ACCESS_BUFFER);
             return BitmapFactory.decodeStream(bmpStream);
 

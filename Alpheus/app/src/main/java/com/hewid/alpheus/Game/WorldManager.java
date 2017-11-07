@@ -2,6 +2,7 @@ package com.hewid.alpheus.Game;
 
 import android.graphics.Canvas;
 
+import com.hewid.alpheus.Game.BubbleWorld.BubbleWorld;
 import com.hewid.alpheus.GameEngine.GameEvent;
 import com.hewid.alpheus.GameEngine.InteractionEvent;
 import com.hewid.alpheus.GameEngine.World;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class WorldManager extends World {
     private List<World> subworlds;
-    private int n = 2;
+    private int n = 3;
     private HardwareManager hardwareManager;
     private boolean isGameOver;
 
@@ -22,6 +23,7 @@ public class WorldManager extends World {
 
         subworlds.add(new SubworldTest(this));
         subworlds.add(new SeesawWorld(this));
+        subworlds.add(new BubbleWorld(this));
     }
 
     @Override
