@@ -29,6 +29,8 @@ public abstract class GameActivity extends AppCompatActivity implements SensorEv
         view.attachWorld(world);
         view.register(pacemaker);
 
+        AssetHandler.setAssetManager(getAssets());
+
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
