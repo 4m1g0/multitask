@@ -15,7 +15,7 @@ public class Bubble extends GameObject {
     public void start(int width, int height) {
         super.start(width, height);
 
-        sprite = new Sprite("bubble.png", 100, 100, 7);
+        sprite = new Sprite("bubble.png", 150, 150, 2, 2);
     }
 
     @Override
