@@ -20,6 +20,7 @@ public class Sprite {
     private int lastFrame = -1;
     private Paint p;
     private int sum = 0;
+    private Matrix matrix = new Matrix();
 
     public Sprite(String filename, int width, int height, int sizeofSprite, int fps) {
         this.mspf = (double) 1000 / fps;
@@ -40,16 +41,14 @@ public class Sprite {
             return;
 
         lastFrame = frame;
-
-        Matrix matrix = new Matrix();
-        matrix.postTranslate(-frame * width, 0);
-
-        canvas.setBitmap(catchedBitmap);
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        canvas.drawBitmap(rawBitmap, matrix, p);
+        
+        matrix.setTranslate(-frame * width, 0);
     }
 
     public synchronized Bitmap getBitmap() {
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        canvas.drawBitmap(rawBitmap, matrix, p);
+        
         return catchedBitmap;
     }
 }
