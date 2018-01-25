@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 public class BubbleWorld extends World {
 
-    List<Bubble> bubbleList = new LinkedList<>();
+    private List<Bubble> bubbleList = new LinkedList<>();
 
     public BubbleWorld(GameEventHandler gameEventHandler) {
         super(gameEventHandler);

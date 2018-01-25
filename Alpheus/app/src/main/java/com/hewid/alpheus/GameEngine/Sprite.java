@@ -18,7 +18,7 @@ public class Sprite {
     private int repetitions;
     private double mspf;
     private int sizeOfSprite;
-    Canvas canvas;
+    private Canvas canvas;
     private int lastFrame = -1;
     private Paint p;
     private int sum = 0;

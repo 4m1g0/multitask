@@ -8,8 +8,8 @@ import com.hewid.alpheus.GameEngine.InteractionEvent;
 import com.hewid.alpheus.GameEngine.World;
 
 public class SeesawWorld extends World {
-    Ball ball;
-    Platform platform;
+    private Ball ball;
+    private Platform platform;
 
     public SeesawWorld(GameEventHandler gameEventHandler) {
         super(gameEventHandler);
