@@ -77,7 +77,7 @@ public class Ball extends GameObject {
     }
 
     @Override
-    public void update(long time) {
+    public boolean update(long time) {
         long elapsedTime = time - lastUpdateTime;
         lastUpdateTime = time;
         calculateMeanAcceleration();
@@ -94,6 +94,8 @@ public class Ball extends GameObject {
         if (isBallOutOfPlatform()) {
             gameEventHandler.handleGameEvent(new GameEvent(GameEvent.GAME_OVER));
         }
+
+        return true;
     }
 
     @Override

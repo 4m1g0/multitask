@@ -13,7 +13,9 @@ import java.sql.Time;
 public class Sprite {
     private Bitmap rawBitmap;
     private Bitmap catchedBitmap;
-    private int width, height;
+    private int width;
+    private int height;
+    private int repetitions;
     private double mspf;
     private int sizeOfSprite;
     Canvas canvas;
@@ -21,28 +23,37 @@ public class Sprite {
     private Paint p;
     private int sum = 0;
     private Matrix matrix = new Matrix();
+    private int repetitionCount = 0;
 
-    public Sprite(String filename, int width, int height, int sizeofSprite, int fps) {
+    public Sprite(String filename, int width, int height, int sizeofSprite, int fps, int repetitions) {
         this.mspf = (double) 1000 / fps;
         this.sizeOfSprite = sizeofSprite;
         rawBitmap = AssetHandler.getBitmap(filename);
         this.width = width;
         this.height = height;
+        this.repetitions = repetitions;
         catchedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(catchedBitmap);
         p = new Paint();
         p.setAlpha(255);
     }
 
-    public synchronized void update(long time) {
+    public synchronized boolean update(long time) {
         int frame = (int)((time / mspf) % sizeOfSprite);
 
         if (frame == lastFrame)
-            return;
+            return true;
+
+        if (frame == 0)
+            repetitionCount++;
+
+        if (repetitions > 0 && repetitionCount > repetitions)
+            return false;
 
         lastFrame = frame;
         
         matrix.setTranslate(-frame * width, 0);
+        return true;
     }
 
     public synchronized Bitmap getBitmap() {

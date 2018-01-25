@@ -39,7 +39,7 @@ public class Platform extends GameObject {
     }
 
     @Override
-    public void update(long time) { }
+    public boolean update(long time) { return true; }
 
     @Override
     public void draw(Canvas canvas) {

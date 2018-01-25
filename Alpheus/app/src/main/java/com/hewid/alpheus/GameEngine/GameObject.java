@@ -18,6 +18,15 @@ public abstract class GameObject implements InteractionEventHandler {
         this.width = width;
         this.height = height;
     }
-    public abstract void update(long time);
+
+    public void stop() {
+
+    }
+
+    public void pause() {
+
+    }
+
+    public abstract boolean update(long time);
     public abstract void draw(Canvas canvas);
 }

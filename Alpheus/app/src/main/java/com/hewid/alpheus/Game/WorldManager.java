@@ -36,15 +36,17 @@ public class WorldManager extends World {
     }
 
     @Override
-    public void update(long time) {
+    public boolean update(long time) {
         if (isGameOver)
-            return;
+            return true;
 
         //if (time %12) n++
 
         for (int i = 0; i < n; i++) {
             subworlds.get(i).update(time);
         }
+
+        return true;
     }
 
     @Override
@@ -60,16 +62,22 @@ public class WorldManager extends World {
     }
 
     @Override
+    public void stop() {
+        hardwareManager.vibrate(400);
+
+        this.isGameOver = true;
+        // this should call every child to notify the end of the game
+        // instead of using this variable
+    }
+
+    @Override
     public void handleGameEvent(GameEvent event) {
         switch(event.getAction()){
             case GameEvent.POSITIVE_REINFORCEMENT:
-                hardwareManager.vibrate(200);
+                hardwareManager.vibrate(100);
                 break;
             case GameEvent.GAME_OVER:
-                // This 'isGameOver' should not be here, It should exist
-                // another mechanism to do this...
-                this.isGameOver = true;
-                hardwareManager.vibrate(400);
+                stop();
                 break;
         }
     }

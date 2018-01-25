@@ -26,9 +26,11 @@ class SubworldTest extends World {
     }
 
     @Override
-    public void update(long time) {
+    public boolean update(long time) {
         position[0] = (int)((speed[0] * time) % (width - 100));
         position[1] = (int)((speed[1] * time) % (height - 100));
+
+        return true;
     }
 
     @Override

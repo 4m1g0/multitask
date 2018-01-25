@@ -9,6 +9,7 @@ import com.hewid.alpheus.GameEngine.World;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class BubbleWorld extends World {
 
@@ -17,7 +18,8 @@ public class BubbleWorld extends World {
     public BubbleWorld(GameEventHandler gameEventHandler) {
         super(gameEventHandler);
 
-        bubbleList.add(new Bubble());
+        for (int i = 0; i < 3; i++)
+            bubbleList.add(new Bubble(this));
     }
 
     @Override
@@ -31,19 +33,36 @@ public class BubbleWorld extends World {
 
     @Override
     public void handleGameEvent(GameEvent event) {
-
+        gameEventHandler.handleGameEvent(event);
     }
 
     @Override
     public boolean handleInteractionEvent(InteractionEvent event) {
-        return false;
+        boolean handled = false;
+
+        if (event.getAction() == InteractionEvent.TOUCH){
+            for (Bubble bubble : bubbleList) {
+                handled = bubble.handleInteractionEvent(event);
+            }
+        }
+
+        return handled;
     }
 
     @Override
-    public void update(long time) {
-        for (Bubble bubble : bubbleList) {
-            bubble.update(time);
+    public boolean update(long time) {
+        ListIterator<Bubble> i = bubbleList.listIterator();
+        while (i.hasNext()) {
+            Bubble bubble = i.next();
+            if (!bubble.update(time)) {
+                i.remove();
+                Bubble newBubble = new Bubble(this);
+                newBubble.start(width, height);
+                i.add(newBubble);
+            }
         }
+
+        return true;
     }
 
     @Override

@@ -41,9 +41,10 @@ public class SeesawWorld extends World {
     }
 
     @Override
-    public void update(long time) {
+    public boolean update(long time) {
         platform.update(time);
         ball.update(time);
+        return true;
     }
 
     @Override
