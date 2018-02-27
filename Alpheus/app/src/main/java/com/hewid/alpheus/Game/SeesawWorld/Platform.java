@@ -17,9 +17,9 @@ public class Platform extends GameObject {
         super.start(width, height);
 
         platformBitmap = AssetHandler.getBitmap("platform.png");
-        platformStartPoint = (width - platformWidth) / 2;
         platformHeight = platformBitmap.getHeight();
         platformWidth = platformBitmap.getWidth();
+        platformStartPoint = (width - platformWidth) / 2;
     }
 
     public int getHeight() {
