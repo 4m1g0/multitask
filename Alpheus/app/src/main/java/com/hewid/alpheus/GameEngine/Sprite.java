@@ -24,9 +24,10 @@ public class Sprite {
     private int sum = 0;
     private Matrix matrix = new Matrix();
     private int repetitionCount = 0;
+    private long initTime = 0;
 
     public Sprite(String filename, int width, int height, int sizeofSprite, int fps, int repetitions) {
-        this.mspf = (double) 1000 / fps;
+        this.mspf = (double) 1000 / fps; // milliseconds per frame
         this.sizeOfSprite = sizeofSprite;
         rawBitmap = AssetHandler.getBitmap(filename);
         this.width = width;
@@ -39,10 +40,14 @@ public class Sprite {
     }
 
     public synchronized boolean update(long time) {
-        int frame = (int)((time / mspf) % sizeOfSprite);
+        if (initTime == 0) initTime = time;
+
+        int frame = (int)((time - initTime)/ mspf);
 
         if (frame == lastFrame)
             return true;
+
+        frame %= sizeOfSprite;
 
         if (frame == 0)
             repetitionCount++;

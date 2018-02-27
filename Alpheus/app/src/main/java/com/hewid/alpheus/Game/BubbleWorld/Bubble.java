@@ -25,7 +25,7 @@ public class Bubble extends GameObject {
     public void start(int width, int height) {
         super.start(width, height);
 
-        sprite = new Sprite("bubble.png", BUBBLE_WIDTH, BUBBLE_HEIGHT, 2, 2, -1);
+        sprite = new Sprite("bubble3.png", BUBBLE_WIDTH, BUBBLE_HEIGHT, 3, 1, 1);
 
         posX = (int) (Math.random() * (width - BUBBLE_WIDTH));
         posY = (int) (Math.random() * (height - BUBBLE_HEIGHT));
@@ -41,7 +41,7 @@ public class Bubble extends GameObject {
 
             if (distance <= BUBBLE_HEIGHT/2){
                 gameEventHandler.handleGameEvent(new GameEvent(GameEvent.POSITIVE_REINFORCEMENT));
-                sprite = new Sprite("bubble.png", BUBBLE_WIDTH, BUBBLE_HEIGHT, 2, 2, 1);
+                sprite = new Sprite("bubble_exploding.png", BUBBLE_WIDTH, BUBBLE_HEIGHT, 1, 1, 1);
                 return true;
             }
         }
