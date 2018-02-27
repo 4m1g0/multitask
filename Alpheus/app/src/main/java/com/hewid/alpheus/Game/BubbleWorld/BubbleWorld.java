@@ -52,13 +52,15 @@ public class BubbleWorld extends World {
     @Override
     public boolean update(long time) {
         ListIterator<Bubble> i = bubbleList.listIterator();
-        while (i.hasNext()) {
-            Bubble bubble = i.next();
-            if (!bubble.update(time)) {
-                i.remove();
-                Bubble newBubble = new Bubble(this);
-                newBubble.start(width, height);
-                i.add(newBubble);
+
+        synchronized (this) {
+            while (i.hasNext()) {
+                Bubble bubble = i.next();
+                if (!bubble.update(time)) {
+                    Bubble newBubble = new Bubble(this);
+                    newBubble.start(width, height);
+                    i.set(newBubble); // FIXME: This could cause problems because draw and interaction event might be iterating the same list
+                }
             }
         }
 
