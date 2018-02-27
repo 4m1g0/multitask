@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-class AssetHandler {
+public class AssetHandler {
     private static AssetManager assetManager;
 
     static void setAssetManager(AssetManager assetManager) {
