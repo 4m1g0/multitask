@@ -53,13 +53,13 @@ public class BubbleWorld extends World {
     public boolean update(long time) {
         ListIterator<Bubble> i = bubbleList.listIterator();
 
-        synchronized (this) {
-            while (i.hasNext()) {
-                Bubble bubble = i.next();
-                if (!bubble.update(time)) {
-                    Bubble newBubble = new Bubble(this);
-                    newBubble.start(width, height);
-                    i.set(newBubble); // FIXME: This could cause problems because draw and interaction event might be iterating the same list
+        while (i.hasNext()) {
+            Bubble bubble = i.next();
+            if (!bubble.update(time)) {
+                Bubble newBubble = new Bubble(this);
+                newBubble.start(width, height);
+                synchronized (this) {
+                    i.set(newBubble);
                 }
             }
         }
@@ -69,8 +69,10 @@ public class BubbleWorld extends World {
 
     @Override
     public void draw(Canvas canvas) {
-        for (Bubble bubble : bubbleList) {
-            bubble.draw(canvas);
+        synchronized (this) {
+            for (Bubble bubble : bubbleList) {
+                bubble.draw(canvas);
+            }
         }
     }
 }
