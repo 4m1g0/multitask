@@ -13,7 +13,7 @@ import java.util.List;
 
 public class WorldManager extends World {
     private List<World> subworlds;
-    private int n = 3;
+    private int n = 2;
     private HardwareManager hardwareManager;
     private boolean isGameOver;
 
@@ -21,7 +21,7 @@ public class WorldManager extends World {
         this.hardwareManager = hardwareManager;
         subworlds = new ArrayList<>();
 
-        subworlds.add(new SubworldTest(this));
+        //subworlds.add(new SubworldTest(this));
         subworlds.add(new SeesawWorld(this));
         subworlds.add(new BubbleWorld(this));
     }

@@ -38,15 +38,16 @@ public class BubbleWorld extends World {
 
     @Override
     public boolean handleInteractionEvent(InteractionEvent event) {
-        boolean handled = false;
-
         if (event.getAction() == InteractionEvent.TOUCH){
-            for (Bubble bubble : bubbleList) {
-                handled = bubble.handleInteractionEvent(event);
+            // This list has to be iterated in reverse order to interact first with the bubbles drawn last
+            for (int i = bubbleList.size() - 1; i >= 0; i--) {
+                Bubble bubble = bubbleList.get(i);
+                if (bubble.handleInteractionEvent(event))
+                    return true;
             }
         }
 
-        return handled;
+        return false;
     }
 
     @Override
