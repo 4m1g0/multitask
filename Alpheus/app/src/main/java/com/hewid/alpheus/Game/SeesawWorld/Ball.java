@@ -2,10 +2,10 @@ package com.hewid.alpheus.Game.SeesawWorld;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.Matrix;
 import android.hardware.SensorEvent;
 
+import com.hewid.alpheus.GameEngine.AssetHandler;
 import com.hewid.alpheus.GameEngine.GameEvent;
 import com.hewid.alpheus.GameEngine.GameEventHandler;
 import com.hewid.alpheus.GameEngine.GameObject;
@@ -24,6 +24,8 @@ public class Ball extends GameObject {
     private long lastRandomTime;
     private double currentRandAcc;
     private long lastUpdateTime;
+    private Bitmap ballBitmap;
+    private Matrix ballTransformMatrix = new Matrix();
 
     public Ball(GameEventHandler gameEventHandler, Platform platform) {
         super(gameEventHandler);
@@ -34,12 +36,15 @@ public class Ball extends GameObject {
     public void start(int width, int height) {
         super.start(width, height);
 
-        catchedBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(catchedBitmap);
-        Paint paint = new Paint();
-        paint.setColor(Color.rgb(200, 10, 10));
-        paint.setAntiAlias(true);
-        c.drawCircle(50, 50, 50, paint);
+        ballBitmap = AssetHandler.getBitmap("ball.png");
+
+
+//        catchedBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+//        Canvas c = new Canvas(catchedBitmap);
+//        Paint paint = new Paint();
+//        paint.setColor(Color.rgb(200, 10, 10));
+//        paint.setAntiAlias(true);
+//        c.drawCircle(50, 50, 50, paint);
         this.position = width / 2 - ballDiameter / 2;
     }
 
@@ -56,8 +61,8 @@ public class Ball extends GameObject {
         return false;
     }
 
-    private synchronized void calculateMeanAcceleration(){
-        if (nValues == 0){
+    private synchronized void calculateMeanAcceleration() {
+        if (nValues == 0) {
             acceleration = accelerationAccomulation;
             return;
         }
@@ -66,11 +71,11 @@ public class Ball extends GameObject {
         accelerationAccomulation = 0;
         nValues = 0;
     }
-    
-    private void randomizeAcceleration(long time){
+
+    private void randomizeAcceleration(long time) {
         if (time - lastRandomTime > RANDOMTIME) {
             lastRandomTime = time;
-            currentRandAcc = Math.random()*RANDOMACC*2-RANDOMACC;
+            currentRandAcc = Math.random() * RANDOMACC * 2 - RANDOMACC;
         } else {
             acceleration += currentRandAcc;
         }
@@ -83,7 +88,7 @@ public class Ball extends GameObject {
         calculateMeanAcceleration();
         randomizeAcceleration(time);
         speed += acceleration * ((float) elapsedTime / 20);
-        if (Math.abs(speed) < 0.1){
+        if (Math.abs(speed) < 0.1) {
             if (acceleration > 0)
                 speed = 0.2f;
             else
@@ -100,7 +105,10 @@ public class Ball extends GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(catchedBitmap, position, height - platform.getHeight() - ballDiameter, null);
+        ballTransformMatrix.setTranslate(position, height - platform.getHeight() - ballDiameter);
+        ballTransformMatrix.postRotate(position % 360, position + ballDiameter / 2,
+                height - platform.getHeight() - ballDiameter / 2);
+        canvas.drawBitmap(ballBitmap, ballTransformMatrix, null);
     }
 
     private boolean isBallOutOfPlatform() {
